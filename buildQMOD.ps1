@@ -24,7 +24,8 @@ if ($LASTEXITCODE -ne 0) {
 $modJson = Get-Content $mod -Raw | ConvertFrom-Json
 
 if ($qmodName -eq "") {
-    $qmodName = $modJson.name
+    $qmodName = $modJson.id
+    $qmodVersion = $modJson.version
 }
 
 $filelist = @($mod)
@@ -58,8 +59,10 @@ foreach ($lib in $modJson.libraryFiles) {
     $filelist += $path
 }
 
-$zip = $qmodName + ".zip"
-$qmod = $qmodName + ".qmod"
+$fileStem = $qmodName + ".v" + $qmodVersion
+
+$zip = $fileStem + ".zip"
+$qmod = $fileStem + ".qmod"
 
 Compress-Archive -Path $filelist -DestinationPath $zip -Update
 Move-Item $zip $qmod -Force
