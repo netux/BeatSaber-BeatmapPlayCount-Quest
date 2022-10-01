@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "oculus.oculus-vscode-debugger",
+        "ms-vscode.cpptools",
+        "twxs.cmake"
+    ]
+}
