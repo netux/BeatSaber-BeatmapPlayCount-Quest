@@ -12,7 +12,7 @@
 
 namespace BeatmapPlayCount::Hooks {
     static std::string lastBeatmapIdInMenu;
-    static TMPro::TextMeshProUGUI* playCountTextGameObject;
+    static SafePtrUnity<TMPro::TextMeshProUGUI> playCountTextGameObject;
 
     MAKE_HOOK_MATCH(PatchCountTextAndTrackLastBeatmapId, &GlobalNamespace::StandardLevelDetailView::RefreshContent, void,
         GlobalNamespace::StandardLevelDetailView* instance
