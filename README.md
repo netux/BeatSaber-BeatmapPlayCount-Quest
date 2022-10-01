@@ -17,6 +17,10 @@ Differences from the PC version:
 - Make percentage to increment song's count configurable
 - Use a ▶ image as an icon for the level detail label.
 
+# Data location
+
+Play counts are stored in `/sdcard/ModData/com.beatgames.beatsaber/Mods/BeatmapPlayCount/(Level ID).count`.
+
 ## Credits
 
 * [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
