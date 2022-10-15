@@ -60,6 +60,8 @@ foreach ($lib in $modJson.libraryFiles) {
     $filelist += $path
 }
 
+qpm-rust qmod build
+
 $fileStem = $qmodName + ".v" + $qmodVersion
 
 $zip = $fileStem + ".zip"
