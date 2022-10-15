@@ -1,10 +1,18 @@
 #include "common.hpp"
 #include "hooks.hpp"
-#include "managers.hpp"
+
+#include "managers/TrackPlaytime.hpp"
 
 #include "custom-types/shared/register.hpp"
 
 #include "beatsaber-hook/shared/utils/hooking.hpp"
+
+#include "lapiz/shared/zenject/Zenjector.hpp"
+#include "lapiz/shared/zenject/Location.hpp"
+
+#include "Zenject/DiContainer.hpp"
+#include "Zenject/FromBinderNonGeneric.hpp"
+#include "Zenject/ConcreteIdBinderGeneric_1.hpp"
 
 static ModInfo modInfo; // Stores the ID and version of our mod, and is sent to the modloader upon startup
 
@@ -34,8 +42,17 @@ extern "C" void load() {
     il2cpp_functions::Init();
 
     auto& logger = getLogger();
+    auto zenjector = Lapiz::Zenject::Zenjector::Get();
 
     logger.debug("Installing hooks...");
     BeatmapPlayCount::Hooks::install();
     logger.debug("Installed all hooks!");
+
+    logger.debug("Setting up Zenject installers...");
+    zenjector->Install(Lapiz::Zenject::Location::StandardPlayer, [](Zenject::DiContainer* container){
+        // container-> is used to access the DiContainer address,
+        // where you can install anything you need.
+        container->BindInterfacesAndSelfTo<BeatmapPlayCount::Managers::TrackPlaytime*>()->AsSingle()->NonLazy();
+    });
+    logger.debug("Setup all installers!");
 }

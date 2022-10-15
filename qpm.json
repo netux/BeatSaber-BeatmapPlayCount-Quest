@@ -18,7 +18,7 @@
     },
     {
       "id": "beatsaber-hook",
-      "versionRange": "=3.13.0",
+      "versionRange": "^3.14.0",
       "additionalData": {}
     },
     {
@@ -28,7 +28,12 @@
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.15.19",
+      "versionRange": "^0.15.18",
+      "additionalData": {}
+    },
+    {
+      "id": "lapiz",
+      "versionRange": "^0.1.2",
       "additionalData": {}
     }
   ],

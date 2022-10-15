@@ -11,7 +11,6 @@
 #include "UnityEngine/GameObject.hpp"
 
 namespace BeatmapPlayCount::Hooks {
-    static std::string lastBeatmapIdInMenu;
     static SafePtrUnity<TMPro::TextMeshProUGUI> playCountTextGameObject;
 
     MAKE_HOOK_MATCH(PatchCountTextAndTrackLastBeatmapId, &GlobalNamespace::StandardLevelDetailView::RefreshContent, void,
@@ -45,42 +44,9 @@ namespace BeatmapPlayCount::Hooks {
 
         // TODO(netux): replace "plyd #:" with play button icon
         playCountTextGameObject->set_text("plyd #: " + std::to_string(count));
-
-
-        lastBeatmapIdInMenu = beatmapId;
-    }
-
-    static float minimumSongProgressToIncrementingPlayCount = 0.7; // TODO(netux): make configurable
-    static bool hasIncrementedForCurrentSong = false;
-
-    MAKE_HOOK_MATCH(ResetHasIncrementedForCurrentSong, &GlobalNamespace::AudioTimeSyncController::Start, void,
-        GlobalNamespace::AudioTimeSyncController* instance
-    ) {
-        ResetHasIncrementedForCurrentSong(instance);
-
-        hasIncrementedForCurrentSong = false;
-    }
-
-    MAKE_HOOK_MATCH(TrackPlaytime, &GlobalNamespace::AudioTimeSyncController::Update, void,
-        GlobalNamespace::AudioTimeSyncController* instance
-    ) {
-        TrackPlaytime(instance);
-
-        if (hasIncrementedForCurrentSong) {
-            return;
-        }
-
-        auto progress = instance->get_songTime() / instance->get_songEndTime();
-
-        if (progress > minimumSongProgressToIncrementingPlayCount) {
-            getStorage().incrementPlayCount(lastBeatmapIdInMenu);
-            hasIncrementedForCurrentSong = true;
-        }
     }
 
     void install() {
         INSTALL_HOOK(getLogger(), PatchCountTextAndTrackLastBeatmapId);
-        INSTALL_HOOK(getLogger(), ResetHasIncrementedForCurrentSong);
-        INSTALL_HOOK(getLogger(), TrackPlaytime);
     }
 }

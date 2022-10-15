@@ -13,7 +13,6 @@ Differences from the PC version:
 
 ### TODO
 
-- Use Lapiz (Zenject) instead of patches where possible.
 - Make percentage to increment song's count configurable
 - Use a ▶ image as an icon for the level detail label.
 
