@@ -48,9 +48,9 @@
             "label": "Powershell Build, Copy, and Log",
             "detail": "Builds and copies the library to the Quest using ADB, force-quits Beat Saber, and starts logging to file 'logcat.log'",
             "type": "shell",
-            "command": "./copy.ps1 -Log -File logcat.log",
+            "command": "./copy.ps1 -Log -Self -File logcat.log",
             "windows": {
-                "command": "./copy.ps1 -Log -File logcat.log"
+                "command": "./copy.ps1 -Log -Self -File logcat.log"
             },
             "group": "build",
             "options": {
