@@ -30,8 +30,9 @@ if ($qmodName -eq "") {
 
 $filelist = @($mod)
 
-$cover = "./" + $modJson.coverImage
-if ((-not ($cover -eq "./")) -and (Test-Path $cover)) {
+$cover = "./assets/" + $modJson.coverImage
+if ((-not ($cover -eq "./assets/")) -and (Test-Path $cover)) {
+    Write-Output "Adding cover image $cover"
     $filelist += ,$cover
 }
 
