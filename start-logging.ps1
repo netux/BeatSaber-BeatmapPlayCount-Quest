@@ -69,7 +69,7 @@ if ($all -eq $false) {
 }
 
 if (![string]::IsNullOrEmpty($file)) {
-    $command += " | Out-File -FilePath $PSScriptRoot\$file"
+    $command += " | Tee-Object -FilePath $PSScriptRoot\$file"
 }
 
 Write-Output "Logging using Command `"$command`""
