@@ -8,18 +8,18 @@ namespace BeatmapPlayCount {
     class Storage {
         public:
         Storage(const ModInfo& info) {
-            this->mod_data_dir = getDataDir(info);
+            this->modDataDir = getDataDir(info);
 
-            if (!direxists(mod_data_dir)) {
-                mkpath(mod_data_dir);
+            if (!direxists(modDataDir)) {
+                mkpath(modDataDir);
             }
 
-            getLogger().info("Storing play count data at %s", this->mod_data_dir.c_str());
+            getLogger().info("Storing play count data at %s", this->modDataDir.c_str());
         }
 
         // TODO(netux): This goes unused as the cache is populated lazily
         bool load() {
-            auto dir = opendir(this->mod_data_dir.c_str());
+            auto dir = opendir(this->modDataDir.c_str());
             if (dir == NULL) {
                 return false;
             }
@@ -31,7 +31,7 @@ namespace BeatmapPlayCount {
                 auto beatmapId = name.substr(0, extPos);
 
                 auto count = this->readPlayCount(beatmapId);
-                this->counts_cache[beatmapId] = count;
+                this->countsCache[beatmapId] = count;
             }
             closedir(dir);
 
@@ -40,29 +40,31 @@ namespace BeatmapPlayCount {
 
         void incrementPlayCount(std::string beatmapId) {
             auto new_count = this->getPlayCount(beatmapId) + 1;
-            this->counts_cache[beatmapId] = new_count;
+            this->countsCache[beatmapId] = new_count;
             this->writePlayCount(beatmapId, new_count);
+
+            getLogger().debug("Incremented play count for %s to %d", beatmapId.c_str(), new_count);
         }
 
         int getPlayCount(std::string beatmapId) {
-            if (!this->counts_cache.contains(beatmapId)) {
+            if (!this->countsCache.contains(beatmapId)) {
                 auto count = this->readPlayCount(beatmapId);
-                this->counts_cache[beatmapId] = count;
+                this->countsCache[beatmapId] = count;
             }
-            return this->counts_cache[beatmapId];
+            return this->countsCache[beatmapId];
         }
 
         std::string getModDataDir() {
-            return this->mod_data_dir;
+            return this->modDataDir;
         }
 
         private:
-        std::string mod_data_dir;
+        std::string modDataDir;
 
-        std::unordered_map<std::string, int> counts_cache;
+        std::unordered_map<std::string, int> countsCache;
 
         std::string getPlayCountPath(std::string beatmapId) {
-            return this->mod_data_dir + "/" + beatmapId + ".count";
+            return this->modDataDir + "/" + beatmapId + ".count";
         }
 
         int readPlayCount(std::string beatmapId) {
