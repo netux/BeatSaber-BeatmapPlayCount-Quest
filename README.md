@@ -13,7 +13,6 @@ Differences from the PC version:
 
 ### TODO
 
-- Make percentage to increment song's count configurable
 - Use a ▶ image as an icon for the level detail label.
 
 # Data location

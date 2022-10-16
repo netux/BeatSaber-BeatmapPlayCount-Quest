@@ -3,12 +3,15 @@
 #include "hooks.hpp"
 
 #include "managers/TrackPlaytime.hpp"
+#include "views/SettingsViewController.hpp"
 
 #include "custom-types/shared/register.hpp"
 
 #include "beatsaber-hook/shared/utils/hooking.hpp"
 
 #include "config-utils/shared/config-utils.hpp"
+
+#include "questui/shared/QuestUI.hpp"
 
 #include "lapiz/shared/zenject/Zenjector.hpp"
 #include "lapiz/shared/zenject/Location.hpp"
@@ -61,4 +64,9 @@ extern "C" void load() {
         container->BindInterfacesAndSelfTo<BeatmapPlayCount::Managers::TrackPlaytime*>()->AsSingle()->NonLazy();
     });
     logger.debug("Setup all installers!");
+
+    logger.debug("Setting up UI...");
+    QuestUI::Init();
+    QuestUI::Register::RegisterModSettingsViewController<BeatmapPlayCount::Views::SettingsViewController*>(modInfo, "Simple Beatmap Play Count");
+    logger.debug("Registered Settings UI!");
 }
