@@ -16,12 +16,21 @@ namespace BeatmapPlayCount::Views {
 
         BeatSaberUI::CreateSliderSetting(
             container->get_transform(),
-            /* text: */ "Minimum song progress % to increment play count",
+            /* text: */ getConfig().MinimumSongProgressToIncrementPlayCount.GetName(),
             /* increment: */ 0.01,
             /* value: */ getConfig().MinimumSongProgressToIncrementPlayCount.GetValue() * 100,
             /* minValue: */ 0, /* maxValue: */ 100,
             [](float newValue) {
                 getConfig().MinimumSongProgressToIncrementPlayCount.SetValue(newValue / 100);
+            }
+        );
+
+        BeatSaberUI::CreateToggle(
+            container->get_transform(),
+            /* text: */ getConfig().IncrementCountInPracticeMode.GetName(),
+            /* value: */ getConfig().IncrementCountInPracticeMode.GetValue(),
+            [](bool newValue) {
+                getConfig().IncrementCountInPracticeMode.SetValue(newValue);
             }
         );
     }

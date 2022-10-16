@@ -1,7 +1,7 @@
 #include "common.hpp"
 #include "managers/TrackPlaytime.hpp"
 
-#include "GlobalNamespace/StandardGameplaySceneSetupData.hpp"
+#include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/AudioTimeSyncController.hpp"
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
 
@@ -9,11 +9,15 @@ DEFINE_TYPE(BeatmapPlayCount::Managers, TrackPlaytime);
 
 namespace BeatmapPlayCount::Managers {
     void TrackPlaytime::ctor(
-        GlobalNamespace::StandardGameplaySceneSetupData* _standardSceneSetupData,
+        GlobalNamespace::GameplayCoreSceneSetupData* _sceneSetupData,
         GlobalNamespace::AudioTimeSyncController* _audioTimeSyncController
     ) {
         audioTimeSyncController = _audioTimeSyncController;
-        beatmapId = _standardSceneSetupData->previewBeatmapLevel->get_levelID();
+        beatmapId = _sceneSetupData->previewBeatmapLevel->get_levelID();
+
+        isGameplayInPracticeMode = _sceneSetupData->practiceSettings != nullptr;
+
+        getLogger().debug("isGameplayInPracticeMode %d", isGameplayInPracticeMode);
     }
 
     void TrackPlaytime::IncrementPlayCount() {
@@ -23,8 +27,17 @@ namespace BeatmapPlayCount::Managers {
         }
     }
 
+    bool TrackPlaytime::CanIncrementByPercentageBecauseOfPracticeMode() {
+        return isGameplayInPracticeMode &&
+            getConfig().IncrementCountInPracticeMode.GetValue();
+    }
+
+    bool TrackPlaytime::CanIncrementByPercentage() {
+        return CanIncrementByPercentageBecauseOfPracticeMode();
+    }
+
     void TrackPlaytime::Tick() {
-        if (incremented) {
+        if (!CanIncrementByPercentage() || incremented) {
             return;
         }
 
