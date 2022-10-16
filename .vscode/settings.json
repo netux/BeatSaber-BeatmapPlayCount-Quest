@@ -123,7 +123,8 @@
         "format": "cpp",
         "stop_token": "cpp",
         "source_location": "cpp",
-        "__std_stream": "cpp"
+        "__std_stream": "cpp",
+        "*.rh": "cpp"
     },
     "terminal.integrated.automationProfile.windows": {
         "path": "pwsh.exe",

@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include "config.hpp"
 #include "hooks.hpp"
 
 #include "managers/TrackPlaytime.hpp"
@@ -6,6 +7,8 @@
 #include "custom-types/shared/register.hpp"
 
 #include "beatsaber-hook/shared/utils/hooking.hpp"
+
+#include "config-utils/shared/config-utils.hpp"
 
 #include "lapiz/shared/zenject/Zenjector.hpp"
 #include "lapiz/shared/zenject/Location.hpp"
@@ -15,6 +18,8 @@
 #include "Zenject/ConcreteIdBinderGeneric_1.hpp"
 
 static ModInfo modInfo; // Stores the ID and version of our mod, and is sent to the modloader upon startup
+
+DEFINE_CONFIG(Config);
 
 // Returns a logger, useful for printing debug messages
 Logger& getLogger() {
@@ -34,6 +39,7 @@ extern "C" void setup(ModInfo& info) {
     modInfo = info;
 
     // getStorage().load();
+    getConfig().Init(modInfo);
     getLogger().info("Completed setup!");
 }
 

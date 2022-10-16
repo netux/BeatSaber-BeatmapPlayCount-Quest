@@ -18,3 +18,5 @@ Logger& getLogger();
 #include "storage.hpp"
 
 BeatmapPlayCount::Storage& getStorage();
+
+#include "config.hpp"

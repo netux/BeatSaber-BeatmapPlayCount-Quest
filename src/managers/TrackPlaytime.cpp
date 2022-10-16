@@ -8,8 +8,6 @@
 DEFINE_TYPE(BeatmapPlayCount::Managers, TrackPlaytime);
 
 namespace BeatmapPlayCount::Managers {
-    static const float MinimumSongProgressToIncrementingPlayCount = 0.7; // TODO(netux): make configurable
-
     void TrackPlaytime::ctor(
         GlobalNamespace::StandardGameplaySceneSetupData* _standardSceneSetupData,
         GlobalNamespace::AudioTimeSyncController* _audioTimeSyncController
@@ -30,11 +28,13 @@ namespace BeatmapPlayCount::Managers {
             return;
         }
 
+        auto MinimumSongProgressToIncrementPlayCount = getConfig().MinimumSongProgressToIncrementPlayCount.GetValue();
+
         auto currentTime = audioTimeSyncController->get_songTime();
         auto endTime = audioTimeSyncController->get_songEndTime();
         auto progress = currentTime / endTime;
         getLogger().debug("Progress %f", progress);
-        if (progress >= MinimumSongProgressToIncrementingPlayCount) {
+        if (progress >= MinimumSongProgressToIncrementPlayCount) {
             IncrementPlayCount();
 
         }
