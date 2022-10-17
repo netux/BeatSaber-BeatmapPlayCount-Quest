@@ -2,13 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Build, Copy, Restart and Log",
+            "name": "Build, Copy, Restart, and Log",
             "type": "PowerShell",
             "request": "launch",
-            "preLaunchTask": "Powershell Build and Copy",
             "cwd": "${workspaceFolder}",
-            "script": ".\\start-logging.ps1",
-            "args": ["-Self", "-File", "logcat.log"]
+            "script": ".\\copy.ps1",
+            "args": ["-Log", "-Self", "-File", "logcat.log"]
         },
         {
             "name": "Launch Beat Saber",
