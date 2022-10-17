@@ -5,9 +5,9 @@
 // Declare the mod config as "Config" and declare all its values and functions.
 DECLARE_CONFIG(Config,
     // Declare variables
-    CONFIG_VALUE(MinimumSongProgressToIncrementPlayCount, float, "Minimum song progress %% to incrent play count", 0.7);
-    CONFIG_VALUE(IncrementCountInPracticeMode, bool, "Increment count during practice mode", true);
-    CONFIG_VALUE(OnlyIncrementInPracticeModeWhenThePlayerFinishes, bool, "but only when finishing the song", true);
+    CONFIG_VALUE(MinimumSongProgressToIncrementPlayCount, float, "MinimumSongProgressToIncrementPlayCount", 0.7);
+    CONFIG_VALUE(IncrementCountInPracticeMode, bool, "IncrementCountInPracticeMode", true);
+    CONFIG_VALUE(OnlyIncrementInPracticeModeWhenThePlayerFinishes, bool, "OnlyIncrementInPracticeModeWhenThePlayerFinishes", true);
 
     CONFIG_INIT_FUNCTION(
         // Initialize variables

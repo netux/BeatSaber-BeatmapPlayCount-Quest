@@ -17,9 +17,10 @@ namespace BeatmapPlayCount::Views {
 
         container = BeatSaberUI::CreateScrollableSettingsContainer(this->get_transform());
 
+        #pragma region Minimum song progress
         sliderFor_MinimumSongProgressToIncrementPlayCount = BeatSaberUI::CreateSliderSetting(
             container->get_transform(),
-            /* text: */ getConfig().MinimumSongProgressToIncrementPlayCount.GetName(),
+            /* text: */ "Minimum song progress %% to incrent play count",
             /* increment: */ 0.01,
             /* value: */ getConfig().MinimumSongProgressToIncrementPlayCount.GetValue() * 100,
             /* minValue: */ 0, /* maxValue: */ 100,
@@ -27,10 +28,12 @@ namespace BeatmapPlayCount::Views {
                 getConfig().MinimumSongProgressToIncrementPlayCount.SetValue(newValue / 100);
             }
         );
+        #pragma endregion Minimum song progress
 
+        #pragma region In practice mode
         toggleFor_IncrementCountInPracticeMode = BeatSaberUI::CreateToggle(
             container->get_transform(),
-            /* text: */ getConfig().IncrementCountInPracticeMode.GetName(),
+            /* text: */ "Increment count during practice mode",
             /* value: */ getConfig().IncrementCountInPracticeMode.GetValue(),
             [&](bool newValue) {
                 getConfig().IncrementCountInPracticeMode.SetValue(newValue);
@@ -46,12 +49,13 @@ namespace BeatmapPlayCount::Views {
 
         toggleFor_OnlyIncrementInPracticeModeWhenThePlayerFinishes = BeatSaberUI::CreateToggle(
             layoutFor_OnlyIncrementInPracticeModeWhenThePlayerFinishes->get_transform(),
-            /* text: */ getConfig().OnlyIncrementInPracticeModeWhenThePlayerFinishes.GetName(),
+            /* text: */ "but only when finishing the song",
             /* value: */ getConfig().OnlyIncrementInPracticeModeWhenThePlayerFinishes.GetValue(),
             [](bool newValue) {
                 getConfig().OnlyIncrementInPracticeModeWhenThePlayerFinishes.SetValue(newValue);
             }
         );
         toggleFor_OnlyIncrementInPracticeModeWhenThePlayerFinishes->set_interactable(getConfig().IncrementCountInPracticeMode.GetValue());
+        #pragma endregion In practice mode
     }
 }
