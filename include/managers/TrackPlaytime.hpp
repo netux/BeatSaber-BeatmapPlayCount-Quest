@@ -5,6 +5,7 @@
 
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/AudioTimeSyncController.hpp"
+#include "GlobalNamespace/AudioTimeSyncController_InitData.hpp"
 #include "GlobalNamespace/ILevelEndActions.hpp"
 
 #include "Zenject/IInitializable.hpp"
@@ -20,10 +21,12 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BeatmapPlayCount::Managers, TrackPlaytime, Il2C
     DECLARE_PRIVATE_FIELD(StringW, beatmapId);
     DECLARE_PRIVATE_FIELD_DEFAULT(bool, incremented, false);
     DECLARE_PRIVATE_FIELD(bool, isGameplayInPracticeMode);
+    DECLARE_PRIVATE_FIELD(float, songStartTime);
 
     DECLARE_CTOR(ctor,
         ::GlobalNamespace::GameplayCoreSceneSetupData* _sceneSetupData,
         ::GlobalNamespace::AudioTimeSyncController* _audioTimeSyncController,
+        ::GlobalNamespace::AudioTimeSyncController::InitData* _audioTimeSyncControllerInitData,
         ::GlobalNamespace::ILevelEndActions* _levelEndActionImpl
     );
 

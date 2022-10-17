@@ -5,6 +5,7 @@
 
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/AudioTimeSyncController.hpp"
+#include "GlobalNamespace/AudioTimeSyncController_InitData.hpp"
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
 #include "GlobalNamespace/ILevelEndActions.hpp"
 
@@ -16,6 +17,7 @@ namespace BeatmapPlayCount::Managers {
     void TrackPlaytime::ctor(
         GlobalNamespace::GameplayCoreSceneSetupData* _sceneSetupData,
         GlobalNamespace::AudioTimeSyncController* _audioTimeSyncController,
+        GlobalNamespace::AudioTimeSyncController::InitData* _audioTimeSyncControllerInitData,
         GlobalNamespace::ILevelEndActions* _levelEndActionImpl
     ) {
         audioTimeSyncController = _audioTimeSyncController;
@@ -27,8 +29,10 @@ namespace BeatmapPlayCount::Managers {
         });
 
         isGameplayInPracticeMode = _sceneSetupData->practiceSettings != nullptr;
+        songStartTime = _audioTimeSyncControllerInitData->startSongTime;
 
         getLogger().debug("isGameplayInPracticeMode %d", isGameplayInPracticeMode);
+        getLogger().debug("songStartTime %f", songStartTime);
     }
 
     void TrackPlaytime::Initialize() {
@@ -75,8 +79,11 @@ namespace BeatmapPlayCount::Managers {
 
         auto MinimumSongProgressToIncrementPlayCount = getConfig().MinimumSongProgressToIncrementPlayCount.GetValue();
 
-        auto currentTime = audioTimeSyncController->get_songTime();
-        auto endTime = audioTimeSyncController->get_songEndTime();
+        auto currentTime = audioTimeSyncController->get_songTime() - songStartTime;
+        if (currentTime < 0) {
+            currentTime = 0;
+        }
+        auto endTime = audioTimeSyncController->get_songEndTime() - songStartTime;
         auto progress = currentTime / endTime;
         getLogger().debug("Progress %f", progress);
         if (progress >= MinimumSongProgressToIncrementPlayCount) {

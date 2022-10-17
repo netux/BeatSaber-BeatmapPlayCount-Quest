@@ -15,7 +15,6 @@ Differences from the PC version:
 
 - Use a ▶ image as an icon for the level detail label.
 - Features from PC version:
-  - Make progress relative to when the user started the song
   - Beatmap characteristic banning
 
 # Data location
