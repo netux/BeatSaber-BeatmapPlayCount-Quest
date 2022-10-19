@@ -14,8 +14,7 @@ Differences from the PC version:
 ### TODO
 
 - Use a ▶ image as an icon for the level detail label.
-- Features from PC version:
-  - Beatmap characteristic banning
+- API for other mods to access play counts (Storage)
 
 # Data location
 

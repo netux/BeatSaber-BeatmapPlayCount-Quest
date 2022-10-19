@@ -19,8 +19,10 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BeatmapPlayCount::Managers, TrackPlaytime, Il2C
     DECLARE_PRIVATE_FIELD(::GlobalNamespace::ILevelEndActions*, levelEndActionImpl);
     DECLARE_PRIVATE_FIELD(::System::Action*, handleLevelFinishedEventAction);
     DECLARE_PRIVATE_FIELD(StringW, beatmapId);
+    DECLARE_PRIVATE_FIELD(StringW, beatmapCharacteristic);
     DECLARE_PRIVATE_FIELD_DEFAULT(bool, incremented, false);
     DECLARE_PRIVATE_FIELD(bool, isGameplayInPracticeMode);
+    DECLARE_PRIVATE_FIELD(bool, doesBeatmapHaveBannedCharacteristic);
     DECLARE_PRIVATE_FIELD(float, songStartTime);
 
     DECLARE_CTOR(ctor,
@@ -40,4 +42,5 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BeatmapPlayCount::Managers, TrackPlaytime, Il2C
 
     bool CanIncrementByPercentageBecauseOfPracticeMode();
     bool CanIncrementByPercentage();
+    bool CanIncrement();
 )

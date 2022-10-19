@@ -7,6 +7,9 @@
 #include "GlobalNamespace/AudioTimeSyncController.hpp"
 #include "GlobalNamespace/AudioTimeSyncController_InitData.hpp"
 #include "GlobalNamespace/IPreviewBeatmapLevel.hpp"
+#include "GlobalNamespace/IDifficultyBeatmap.hpp"
+#include "GlobalNamespace/IDifficultyBeatmapSet.hpp"
+#include "GlobalNamespace/BeatmapCharacteristicSO.hpp"
 #include "GlobalNamespace/ILevelEndActions.hpp"
 
 #include "System/Action.hpp"
@@ -22,6 +25,7 @@ namespace BeatmapPlayCount::Managers {
     ) {
         audioTimeSyncController = _audioTimeSyncController;
         beatmapId = _sceneSetupData->previewBeatmapLevel->get_levelID();
+        beatmapCharacteristic = _sceneSetupData->difficultyBeatmap->get_parentDifficultyBeatmapSet()->get_beatmapCharacteristic()->get_serializedName();
         levelEndActionImpl = _levelEndActionImpl;
 
         handleLevelFinishedEventAction = custom_types::MakeDelegate<System::Action*>(classof(System::Action*), (std::function<void()>) [this]() {
@@ -36,6 +40,14 @@ namespace BeatmapPlayCount::Managers {
     }
 
     void TrackPlaytime::Initialize() {
+        auto bannedBeatmapCharacteristics = getConfig().BannedBeatmapCharacteristics.GetValue();
+        doesBeatmapHaveBannedCharacteristic = std::find(
+            bannedBeatmapCharacteristics.begin(),
+            bannedBeatmapCharacteristics.end(),
+            beatmapCharacteristic
+        ) != bannedBeatmapCharacteristics.end();
+        getLogger().debug("doesBeatmapHaveBannedCharacteristic %d", doesBeatmapHaveBannedCharacteristic);
+
         levelEndActionImpl->add_levelFinishedEvent(handleLevelFinishedEventAction);
     }
 
@@ -50,7 +62,7 @@ namespace BeatmapPlayCount::Managers {
     }
 
     void TrackPlaytime::IncrementPlayCount() {
-        if (incremented) {
+        if (!CanIncrement() || incremented) {
             return;
         }
 
@@ -69,7 +81,11 @@ namespace BeatmapPlayCount::Managers {
     }
 
     bool TrackPlaytime::CanIncrementByPercentage() {
-        return CanIncrementByPercentageBecauseOfPracticeMode();
+        return CanIncrement() && CanIncrementByPercentageBecauseOfPracticeMode();
+    }
+
+    bool TrackPlaytime::CanIncrement() {
+        return !doesBeatmapHaveBannedCharacteristic;
     }
 
     void TrackPlaytime::Tick() {
@@ -85,7 +101,6 @@ namespace BeatmapPlayCount::Managers {
         }
         auto endTime = audioTimeSyncController->get_songEndTime() - songStartTime;
         auto progress = currentTime / endTime;
-        getLogger().debug("Progress %f", progress);
         if (progress >= MinimumSongProgressToIncrementPlayCount) {
             IncrementPlayCount();
         }
