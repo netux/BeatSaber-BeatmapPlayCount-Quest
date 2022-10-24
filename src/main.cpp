@@ -41,7 +41,6 @@ extern "C" void setup(ModInfo& info) {
     info.version = VERSION;
     modInfo = info;
 
-    // getStorage().load();
     getConfig().Init(modInfo);
     getLogger().info("Completed setup!");
 }
@@ -58,7 +57,7 @@ extern "C" void load() {
     logger.debug("Installed all hooks!");
 
     logger.debug("Setting up Zenject installers...");
-    zenjector->Install(Lapiz::Zenject::Location::StandardPlayer, [](Zenject::DiContainer* container){
+    zenjector->Install(Lapiz::Zenject::Location::StandardPlayer, [](Zenject::DiContainer* container) {
         // container-> is used to access the DiContainer address,
         // where you can install anything you need.
         container->BindInterfacesAndSelfTo<BeatmapPlayCount::Managers::TrackPlaytime*>()->AsSingle()->NonLazy();

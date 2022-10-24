@@ -2,15 +2,14 @@
 
 Simple mod to keep track of how many times you've played a song.
 
-![Preview](./assets/menu-leveldetail-playcount.jpg)
+![Preview](./assets/menu-leveldetail-playcount.png)
 
 The count is incremented after playing 70% through a song by default, but this can be configured along other values through an in-game UI:
 
-![Preview](./assets/mod-settings.png)
+![Mod settings](./assets/mod-settings.png)
 
 ### TODO
 
-- Use a ▶ image as an icon for the level detail label.
 - API for other mods to access play counts (Storage)
 
 ## Installation
@@ -19,7 +18,12 @@ The count is incremented after playing 70% through a song by default, but this c
 2. Follow the steps on the [BSMG wiki to install mods on Quest with or without a PC](https://bsmg.wiki/quest-modding.html#installing-mods)
    - Download the latest .qmod release for your Beat Saber version from [the Releases link on the right](releases/).
 
-# Data location
+## About mod assets
+
+The [Resources/Bundle.bundle](./BeatmapPlayCount/Resources/Bundle.bundle) file is generated via [a separate Unity project](https://github.com/netux/BeatSaber-BeatmapPlayCount-AssetBundler).
+
+This file is embedded into each release .qmod, so there is no need to download it separately.
+
 ## Data location
 
 Play counts are stored in `/sdcard/ModData/com.beatgames.beatsaber/Mods/BeatmapPlayCount/(Level ID).count`.
