@@ -4,24 +4,32 @@ Simple mod to keep track of how many times you've played a song.
 
 ![Preview](./assets/menu-leveldetail-playcount.jpg)
 
-By default, the count is incremented after reaching 70% through the song.
+The count is incremented after playing 70% through a song by default, but this can be configured along other values through an in-game UI:
 
-Differences from the PC version:
-
-- The percentage needed to increment a song's count is hardcoded, and can't be changed recompiling.
-- The ▶ icon was stripped away from the in-game font on Quest, so the text says "playd #:" instead.
+![Preview](./assets/mod-settings.png)
 
 ### TODO
 
 - Use a ▶ image as an icon for the level detail label.
 - API for other mods to access play counts (Storage)
 
+## Installation
+
+1. Make sure your Beat Saber installation [has mod support](https://bsmg.wiki/quest-modding.html) (e.g. setup via BMBF)
+2. Follow the steps on the [BSMG wiki to install mods on Quest with or without a PC](https://bsmg.wiki/quest-modding.html#installing-mods)
+   - Download the latest .qmod release for your Beat Saber version from [the Releases link on the right](releases/).
+
 # Data location
+## Data location
 
 Play counts are stored in `/sdcard/ModData/com.beatgames.beatsaber/Mods/BeatmapPlayCount/(Level ID).count`.
+
+Mod configuration is stored in `/sdcard/ModData/com.beatgames.beatsaber/Configs/BeatmapPlayCount.json`.
 
 ## Credits
 
 * [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
+* [raineio](https://github.com/raineio/Lapiz) - [Lapiz](https://github.com/raineio/Lapiz) (Zenjector)
+* [darknight1050](https://github.com/darknight1050) - [QuestUI](https://github.com/darknight1050/QuestUI)
 * [raftario](https://github.com/raftario)
 * [Lauriethefish](https://github.com/Lauriethefish), [danrouse](https://github.com/danrouse) and [Bobby Shmurner](https://github.com/BobbyShmurner) for [this template](https://github.com/Lauriethefish/quest-mod-template)
