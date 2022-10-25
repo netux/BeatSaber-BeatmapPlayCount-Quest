@@ -22,17 +22,21 @@ The count is incremented after playing 70% through a song by default, but this c
 
 This mod relies Lapiz and BeatSaberMarkupLanguage (install automatically when you sync changes in BMBF).
 
-## About mod assets
-
-The [Resources/Bundle.bundle](./BeatmapPlayCount/Resources/Bundle.bundle) file is generated via [a separate Unity project](https://github.com/netux/BeatSaber-BeatmapPlayCount-AssetBundler).
-
-This file is embedded into each release .qmod, so there is no need to download it separately.
-
 ## Data location
 
 Play counts are stored in `/sdcard/ModData/com.beatgames.beatsaber/Mods/BeatmapPlayCount/(Level ID).count`.
 
 Mod configuration is stored in `/sdcard/ModData/com.beatgames.beatsaber/Configs/BeatmapPlayCount.json`.
+
+## Development
+
+Read the [BSMG Wiki Quest Mod Development Intro guide](https://bsmg.wiki/modding/quest-mod-dev-intro.html) to learn how to get your environment setup.
+
+### About mod assets
+
+The [Resources/Bundle.bundle](./BeatmapPlayCount/Resources/Bundle.bundle) file is generated via [a separate Unity project](https://github.com/netux/BeatSaber-BeatmapPlayCount-AssetBundler).
+
+This file is embedded into each release .qmod, so there is no need to download it separately.
 
 ## Credits
 
