@@ -18,6 +18,10 @@ The count is incremented after playing 70% through a song by default, but this c
 2. Follow the steps on the [BSMG wiki to install mods on Quest with or without a PC](https://bsmg.wiki/quest-modding.html#installing-mods)
    - Download the latest .qmod release for your Beat Saber version from [the Releases link on the right](releases/).
 
+### Dependencies
+
+This mod relies Lapiz and BeatSaberMarkupLanguage (install automatically when you sync changes in BMBF).
+
 ## About mod assets
 
 The [Resources/Bundle.bundle](./BeatmapPlayCount/Resources/Bundle.bundle) file is generated via [a separate Unity project](https://github.com/netux/BeatSaber-BeatmapPlayCount-AssetBundler).
