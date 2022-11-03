@@ -34,43 +34,65 @@ if ($help -eq $true) {
 }
 
 $bspid = adb shell pidof com.beatgames.beatsaber
-$command = "adb logcat "
 
-if ($all -eq $false) {
-    $loops = 0
-    while ([string]::IsNullOrEmpty($bspid) -and $loops -lt 3) {
-        Start-Sleep -Milliseconds 100
-        $bspid = adb shell pidof com.beatgames.beatsaber
-        $loops += 1
+function Get-Adb-LogCat-Command ($fileAppend) {
+    $command = "adb logcat "
+
+    if ($all -eq $false) {
+        Write-Output "Getting Beat Saber process ID..."
+        $loops = 0
+        while ([string]::IsNullOrEmpty($bspid) -and $loops -lt 5) {
+            Start-Sleep -Milliseconds 1000
+            $bspid = adb shell pidof com.beatgames.beatsaber
+            $loops += 1
+        }
+
+        if ([string]::IsNullOrEmpty($bspid)) {
+            Write-Output "Could not connect to adb, exiting..."
+            exit 1
+        }
+
+        $command += "--pid $bspid"
     }
 
-    if ([string]::IsNullOrEmpty($bspid)) {
-        Write-Output "Could not connect to adb, exiting..."
-        exit 1
+    if ($all -eq $false) {
+        $pattern = "("
+        if ($self -eq $true) {
+            $modID = (Get-Content "./mod.json" -Raw | ConvertFrom-Json).id
+            $pattern += "$modID|"
+        }
+        if (![string]::IsNullOrEmpty($custom)) {
+            $pattern += "$custom|"
+        }
+        if ($pattern -eq "(") {
+            $pattern = "(QuestHook|modloader|"
+        }
+        $pattern += "AndroidRuntime|CRASH)"
+        $command += " | Select-String -pattern `"$pattern`""
     }
 
-    $command += "--pid $bspid"
+    if (![string]::IsNullOrEmpty($file)) {
+        $command += " | Tee-Object "
+        if ($fileAppend -eq $true) {
+            $command += "-Append "
+        }
+        $command += "-FilePath $PSScriptRoot\$file"
+    }
+
+    return $command
 }
 
-if ($all -eq $false) {
-    $pattern = "("
-    if ($self -eq $true) {
-        $modID = (Get-Content "./mod.json" -Raw | ConvertFrom-Json).id
-        $pattern += "$modID|"
+$firstTry = $true;
+do {
+    try {
+        $command = Get-Adb-LogCat-Command (-not $firstTry)
+        if (-not $firstTry) {
+            Write-Output "Logging using Command `"$command`""
+        }
+        $firstTry = $false
+        Invoke-Expression $command
+    } catch {
+        Write-Error $_
+        break
     }
-    if (![string]::IsNullOrEmpty($custom)) {
-        $pattern += "$custom|"
-    }
-    if ($pattern -eq "(") {
-        $pattern = "(QuestHook|modloader|"
-    }
-    $pattern += "AndroidRuntime|CRASH)"
-    $command += " | Select-String -pattern `"$pattern`""
-}
-
-if (![string]::IsNullOrEmpty($file)) {
-    $command += " | Tee-Object -FilePath $PSScriptRoot\$file"
-}
-
-Write-Output "Logging using Command `"$command`""
-Invoke-Expression $command
+} while ($true)
