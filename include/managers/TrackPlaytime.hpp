@@ -38,6 +38,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BeatmapPlayCount::Managers, TrackPlaytime, Il2C
     DECLARE_OVERRIDE_METHOD(void, Tick, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::Zenject::ITickable::Tick>::get());
     DECLARE_OVERRIDE_METHOD(void, Dispose, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::System::IDisposable::Dispose>::get());
 
+private:
     void IncrementPlayCount();
 
     bool CanIncrementByPercentageBecauseOfPracticeMode();
