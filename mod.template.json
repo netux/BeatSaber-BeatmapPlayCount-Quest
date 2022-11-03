@@ -5,12 +5,14 @@
   "author": "Netux",
   "version": "${version}",
   "packageId": "com.beatgames.beatsaber",
-  "packageVersion": "1.24.0",
+  "packageVersion": "1.25.1",
   "coverImage": "cover.png",
   "description": "",
   "dependencies": [],
   "modFiles": [],
-  "libraryFiles": [],
+  "libraryFiles": [
+    "liblapiz.so"
+  ],
   "fileCopies": [],
   "copyExtensions": []
 }
