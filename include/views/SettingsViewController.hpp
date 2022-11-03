@@ -19,7 +19,6 @@
 
 #include "System/Collections/Generic/List_1.hpp"
 
-// Declare a ViewController to let us create UI in the mod settings menu
 DECLARE_CLASS_CODEGEN(BeatmapPlayCount::Views, SettingsViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, container);
     DECLARE_INSTANCE_FIELD(QuestUI::SliderSetting*, sliderFor_MinimumSongProgressToIncrementPlayCount);
@@ -29,8 +28,7 @@ DECLARE_CLASS_CODEGEN(BeatmapPlayCount::Views, SettingsViewController, HMUI::Vie
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, textFor_BannedBeatmapCharacteristics);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::VerticalLayoutGroup*, layoutFor_BannedBeatmapCharacteristics);
 
-    // Override DidActivate, which is called whenever you enter the menu
-    DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3),
+    DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::ViewController::DidActivate>::get(),
         bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling
     );
 
