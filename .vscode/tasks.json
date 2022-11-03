@@ -9,7 +9,11 @@
             "windows": {
                 "command": "ndk-build.cmd"
             },
-            "args": ["NDK_PROJECT_PATH=.", "APP_BUILD_SCRIPT=./Android.mk", "NDK_APPLICATION_MK=./Application.mk"],
+            "args": [
+                "NDK_PROJECT_PATH=.",
+                "APP_BUILD_SCRIPT=./Android.mk",
+                "NDK_APPLICATION_MK=./Application.mk"
+            ],
             "group": "build",
             "options": {
                 "env": {}
@@ -73,11 +77,20 @@
         },
         {
             "label": "Start logging",
-            "detail": "Begin logging from the Quest to the console",
+            "detail": "Begin logging mod logs from the Quest to the console",
             "type": "shell",
             "command": "./start-logging.ps1",
             "windows": {
                 "command": "./start-logging.ps1"
+            }
+        },
+        {
+            "label": "Start logging self",
+            "detail": "Begin logging from the Quest to the console",
+            "type": "shell",
+            "command": "./start-logging.ps1 -Self",
+            "windows": {
+                "command": "./start-logging.ps1 -Self"
             }
         },
         {
@@ -97,6 +110,27 @@
             "windows": {
                 "command": "./restart-game.ps1"
             }
+        },
+        {
+            "label": "Pull and open recent crash (processed)",
+            "detail": "Pull latest tombstone from device via adb, process it, and open in editor",
+            "type": "shell",
+            "command": "./pull-tombstone.ps1 && ./ndk-stack.ps1 ./RecentCrash.log && code -r ./RecentCrash.log_processed.log",
+            "windows": {
+                "command": "./pull-tombstone.ps1 && ./ndk-stack.ps1 ./RecentCrash.log && code -r ./RecentCrash.log_processed.log"
+            },
+            "problemMatcher": []
+
+        },
+        {
+            "label": "QPM-Rust setup/restore environment",
+            "detail": "Restore dependencies and (re)create mod.json from template",
+            "type": "shell",
+            "command": "qpm-rust restore && qpm-rust qmod build",
+            "windows": {
+                "command": "qpm-rust restore && qpm-rust qmod build"
+            },
+            "problemMatcher": []
         }
     ]
 }
