@@ -38,7 +38,7 @@ namespace BeatmapPlayCount::Hooks {
                 notesPerSecondContainerGameObject->get_transform()->get_parent()->get_parent() /* LevelDetail game object */
             );
             playCountContainerGameObject->set_name("Play Count");
-            playCountContainerGameObject->get_transform()->set_localPosition(UnityEngine::Vector3(14.0, -15.5, 0.0));
+            playCountContainerGameObject->get_transform()->set_localPosition(UnityEngine::Vector3(4.0, -3.0, 0.0));
 
 
             auto playCountContainerHLG = playCountContainerGameObject->AddComponent<UnityEngine::UI::HorizontalLayoutGroup*>();
