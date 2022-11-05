@@ -125,7 +125,8 @@
         "source_location": "cpp",
         "__std_stream": "cpp",
         "*.rh": "cpp",
-        "__memory": "cpp"
+        "__memory": "cpp",
+        "__functional_03": "cpp"
     },
     "terminal.integrated.automationProfile.windows": {
         "path": "pwsh.exe",

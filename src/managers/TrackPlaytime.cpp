@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include "ExternalReplayModUtil.hpp"
 #include "managers/TrackPlaytime.hpp"
 
 #include "custom-types/shared/delegate.hpp"
@@ -34,8 +35,10 @@ namespace BeatmapPlayCount::Managers {
 
         isGameplayInPracticeMode = _sceneSetupData->practiceSettings != nullptr;
         songStartTime = _audioTimeSyncControllerInitData->startSongTime;
+        isGameplayAnExternalModReplay = BeatmapPlayCount::ExternalReplayModUtil::CheckIfGameplayIsAReplay();
 
         getLogger().debug("isGameplayInPracticeMode %d", isGameplayInPracticeMode);
+        getLogger().debug("isGameplayAnExternalModReplay %d", isGameplayAnExternalModReplay);
         getLogger().debug("songStartTime %f", songStartTime);
     }
 
@@ -85,7 +88,7 @@ namespace BeatmapPlayCount::Managers {
     }
 
     bool TrackPlaytime::CanIncrement() {
-        return !doesBeatmapHaveBannedCharacteristic;
+        return !isGameplayAnExternalModReplay && !doesBeatmapHaveBannedCharacteristic;
     }
 
     void TrackPlaytime::Tick() {
