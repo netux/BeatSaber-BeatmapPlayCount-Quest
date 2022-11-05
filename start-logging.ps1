@@ -33,13 +33,12 @@ if ($help -eq $true) {
     exit
 }
 
-$bspid = adb shell pidof com.beatgames.beatsaber
-
 function Get-Adb-LogCat-Command ($fileAppend) {
     $command = "adb logcat "
 
     if ($all -eq $false) {
-        Write-Output "Getting Beat Saber process ID..."
+        Write-Host "Getting Beat Saber process ID... " -NoNewline
+
         $loops = 0
         while ([string]::IsNullOrEmpty($bspid) -and $loops -lt 5) {
             Start-Sleep -Milliseconds 1000
@@ -48,8 +47,11 @@ function Get-Adb-LogCat-Command ($fileAppend) {
         }
 
         if ([string]::IsNullOrEmpty($bspid)) {
-            Write-Output "Could not connect to adb, exiting..."
+            Write-Host ""
+            Write-Host "Could not connect to adb, exiting..."
             exit 1
+        } else {
+            Write-Host $bspid
         }
 
         $command += "--pid $bspid"
@@ -86,8 +88,9 @@ $firstTry = $true;
 do {
     try {
         $command = Get-Adb-LogCat-Command (-not $firstTry)
+
         if (-not $firstTry) {
-            Write-Output "Logging using Command `"$command`""
+            Write-Host "Logging using Command `"$command`""
         }
         $firstTry = $false
         Invoke-Expression $command
