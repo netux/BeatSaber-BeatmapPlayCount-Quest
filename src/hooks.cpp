@@ -14,11 +14,25 @@
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 
 namespace BeatmapPlayCount::Hooks {
     SafePtrUnity<UnityEngine::GameObject> playCountContainerGameObject;
     SafePtrUnity<TMPro::TextMeshProUGUI> playCountText;
+
+    bool HasVisiblePinkCoreRequirementsButton(UnityEngine::Transform* root) {
+        auto buttons = root->FindObjectsOfType<UnityEngine::UI::Button*>();
+        for (auto& buttonComponent : buttons) {
+            auto buttonGameObject = buttonComponent->get_gameObject();
+            auto textComponent = buttonGameObject->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
+            if (textComponent && textComponent->get_text() == "+") { // NOTE(netux): this should be a "?" but 🤷‍♂️
+                return buttonGameObject->get_gameObject()->get_active();
+            }
+        }
+
+        return false;
+    }
 
     MAKE_HOOK_MATCH(PatchCountTextAndTrackLastBeatmapId, &GlobalNamespace::StandardLevelDetailView::RefreshContent, void,
         GlobalNamespace::StandardLevelDetailView* instance
@@ -38,7 +52,6 @@ namespace BeatmapPlayCount::Hooks {
                 notesPerSecondContainerGameObject->get_transform()->get_parent()->get_parent() /* LevelDetail game object */
             );
             playCountContainerGameObject->set_name("Play Count");
-            playCountContainerGameObject->get_transform()->set_localPosition(UnityEngine::Vector3(4.0, -3.0, 0.0));
 
 
             auto playCountContainerHLG = playCountContainerGameObject->AddComponent<UnityEngine::UI::HorizontalLayoutGroup*>();
@@ -67,6 +80,13 @@ namespace BeatmapPlayCount::Hooks {
         auto count = getStorage().getPlayCount(beatmapId);
 
         playCountText->set_text(std::to_string(count));
+
+        auto playCountContainerLocalPosition = UnityEngine::Vector3(
+            HasVisiblePinkCoreRequirementsButton(instance->get_transform()) ? 4.0 : 14.0,
+            -3.0,
+            0.
+        );
+        playCountContainerGameObject->get_transform()->set_localPosition(playCountContainerLocalPosition);
     }
 
     void install() {
