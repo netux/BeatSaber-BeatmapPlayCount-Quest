@@ -68,7 +68,7 @@ namespace BeatmapPlayCount::Views {
         if (beatmapCharacteristicCollections.size() <= 0) {
             auto errorText = BeatSaberUI::CreateText(
                 container->get_transform(),
-                "Uh oh! Could not find retrieve of beatmap characteristics, sorry!"
+                "Uh oh! Could not retrieve list of beatmap characteristics, sorry!"
             );
             errorText->set_color(UnityEngine::Color::get_red());
 
