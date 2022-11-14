@@ -4,10 +4,11 @@
 #include "questui/shared/BeatSaberUI.hpp"
 using namespace QuestUI;
 
+#include "UnityEngine/Color.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/RectOffset.hpp"
-#include "UnityEngine/Color.hpp"
 #include "UnityEngine/TextAnchor.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
@@ -134,6 +135,11 @@ namespace BeatmapPlayCount::Views {
 
         #pragma region Banned beatmap characteristics
         textFor_BannedBeatmapCharacteristics = BeatSaberUI::CreateText(container->get_transform(), "Banned gamemodes / beatmap characteristics");
+
+        // BeatSaberUI::CreateText sets a size delta height of 10 for some reason, which leaves a big gap below the text.
+        // This sets size delta back to the value (implicitly) used on PC.
+        reinterpret_cast<UnityEngine::RectTransform*>(textFor_BannedBeatmapCharacteristics->get_transform())
+            ->set_sizeDelta(UnityEngine::Vector2(90, textFor_BannedBeatmapCharacteristics->get_fontSize() + 1.74));
 
         layoutFor_BannedBeatmapCharacteristics = BeatSaberUI::CreateVerticalLayoutGroup(container->get_transform());
         layoutFor_BannedBeatmapCharacteristics->GetComponent<UnityEngine::UI::LayoutElement*>()->set_preferredWidth(90.0f);
