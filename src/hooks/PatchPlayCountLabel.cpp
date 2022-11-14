@@ -8,6 +8,7 @@
 #include "GlobalNamespace/IDifficultyBeatmap.hpp"
 #include "GlobalNamespace/AudioTimeSyncController.hpp"
 #include "GlobalNamespace/LocalizedHoverHint.hpp"
+#include "GlobalNamespace/SharedCoroutineStarter.hpp"
 #include "HMUI/HoverHint.hpp"
 #include "HMUI/ImageView.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
@@ -22,16 +23,37 @@ namespace BeatmapPlayCount::Hooks::PatchPlayCountLabel {
     SafePtrUnity<TMPro::TextMeshProUGUI> playCountText;
 
     bool HasVisiblePinkCoreRequirementsButton(UnityEngine::Transform* root) {
-        auto buttons = root->FindObjectsOfType<UnityEngine::UI::Button*>();
-        for (auto& buttonComponent : buttons) {
-            auto buttonGameObject = buttonComponent->get_gameObject();
-            auto textComponent = buttonGameObject->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
-            if (textComponent && textComponent->get_text() == "+") { // NOTE(netux): this should be a "?" but 🤷‍♂️
-                return buttonGameObject->get_gameObject()->get_active();
+        static SafePtrUnity<UnityEngine::GameObject> requirementsButton;
+
+        if (!requirementsButton) {
+            requirementsButton = nullptr;
+
+            auto buttons = root->GetComponentsInChildren<UnityEngine::UI::Button*>(/* includeInactive: */ true);
+            for (auto& buttonComponent : buttons) {
+                auto buttonGameObject = buttonComponent->get_gameObject();
+                auto textComponent = buttonGameObject->GetComponentInChildren<TMPro::TextMeshProUGUI*>(/* includeInactive: */ true);
+
+                if (textComponent && textComponent->get_text() == "?") {
+                    requirementsButton = buttonGameObject;
+                    break;
+                }
             }
         }
 
-        return false;
+        return requirementsButton && requirementsButton->get_active();
+    }
+
+    custom_types::Helpers::Coroutine DelayedRepositionPlayCountContainer(UnityEngine::Transform* standardLevelDetailViewTransform) {
+        co_yield nullptr; // wait 1 frame
+
+        auto playCountContainerLocalPosition = UnityEngine::Vector3(
+            HasVisiblePinkCoreRequirementsButton(standardLevelDetailViewTransform) ? 4.0 : 14.0,
+            -3.0,
+            0.
+        );
+        playCountContainerGameObject->get_transform()->set_localPosition(playCountContainerLocalPosition);
+
+        co_return;
     }
 
     MAKE_HOOK_MATCH(PatchPlayCountLabelAfterViewRefresh, &GlobalNamespace::StandardLevelDetailView::RefreshContent, void,
@@ -81,12 +103,8 @@ namespace BeatmapPlayCount::Hooks::PatchPlayCountLabel {
 
         playCountText->set_text(std::to_string(count));
 
-        auto playCountContainerLocalPosition = UnityEngine::Vector3(
-            HasVisiblePinkCoreRequirementsButton(instance->get_transform()) ? 4.0 : 14.0,
-            -3.0,
-            0.
-        );
-        playCountContainerGameObject->get_transform()->set_localPosition(playCountContainerLocalPosition);
+        auto delayedRepositionPlayCountContainerCoro = custom_types::Helpers::CoroutineHelper::New(DelayedRepositionPlayCountContainer(instance->get_transform()));
+        GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(delayedRepositionPlayCountContainerCoro);
     }
 
     void install() {
