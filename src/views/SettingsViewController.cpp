@@ -94,7 +94,7 @@ namespace BeatmapPlayCount::Views {
         #pragma region Minimum song progress
         sliderFor_MinimumSongProgressToIncrementPlayCount = BeatSaberUI::CreateSliderSetting(
             container->get_transform(),
-            /* text: */ "Minimum song progress %% to incrent play count",
+            /* text: */ "Minimum song progress % to incrent play count",
             /* increment: */ 0.01,
             /* value: */ getConfig().MinimumSongProgressToIncrementPlayCount.GetValue() * 100,
             /* minValue: */ 0, /* maxValue: */ 100,
