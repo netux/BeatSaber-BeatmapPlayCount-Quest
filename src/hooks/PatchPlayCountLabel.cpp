@@ -1,6 +1,6 @@
 #include "common.hpp"
-#include "hooks.hpp"
 #include "BundledResources.hpp"
+#include "hooks/PatchPlayCountLabel.hpp"
 
 #include "GlobalNamespace/StandardLevelDetailView.hpp"
 #include "GlobalNamespace/LevelParamsPanel.hpp"
@@ -17,7 +17,7 @@
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 
-namespace BeatmapPlayCount::Hooks {
+namespace BeatmapPlayCount::Hooks::PatchPlayCountLabel {
     SafePtrUnity<UnityEngine::GameObject> playCountContainerGameObject;
     SafePtrUnity<TMPro::TextMeshProUGUI> playCountText;
 
@@ -34,10 +34,10 @@ namespace BeatmapPlayCount::Hooks {
         return false;
     }
 
-    MAKE_HOOK_MATCH(PatchCountTextAndTrackLastBeatmapId, &GlobalNamespace::StandardLevelDetailView::RefreshContent, void,
+    MAKE_HOOK_MATCH(PatchPlayCountLabelAfterViewRefresh, &GlobalNamespace::StandardLevelDetailView::RefreshContent, void,
         GlobalNamespace::StandardLevelDetailView* instance
     ) {
-        PatchCountTextAndTrackLastBeatmapId(instance);
+        PatchPlayCountLabelAfterViewRefresh(instance);
 
         if (!playCountContainerGameObject)
         {
@@ -90,6 +90,6 @@ namespace BeatmapPlayCount::Hooks {
     }
 
     void install() {
-        INSTALL_HOOK(getLogger(), PatchCountTextAndTrackLastBeatmapId);
+        INSTALL_HOOK(getLogger(), PatchPlayCountLabelAfterViewRefresh);
     }
 }

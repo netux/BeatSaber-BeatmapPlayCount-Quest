@@ -1,5 +1,5 @@
 #pragma once
 
 namespace BeatmapPlayCount::Hooks {
-    void install();
+    void installAll();
 }

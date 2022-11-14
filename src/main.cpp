@@ -1,6 +1,6 @@
 #include "common.hpp"
 #include "config.hpp"
-#include "hooks.hpp"
+#include "hooks/install.hpp"
 
 #include "managers/TrackPlaytime.hpp"
 #include "views/SettingsViewController.hpp"
@@ -54,7 +54,7 @@ extern "C" void load() {
     auto zenjector = Lapiz::Zenject::Zenjector::Get();
 
     logger.debug("Installing hooks...");
-    BeatmapPlayCount::Hooks::install();
+    BeatmapPlayCount::Hooks::installAll();
     logger.debug("Installed all hooks!");
 
     logger.debug("Setting up Zenject installers...");
