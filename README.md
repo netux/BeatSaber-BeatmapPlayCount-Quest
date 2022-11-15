@@ -10,7 +10,7 @@ The count is incremented after playing 70% through a song by default, but this c
 
 ### TODO
 
-- API for other mods to access play counts (Storage)
+- Only increment play count when the user beats the beatmap
 
 ## Installation
 

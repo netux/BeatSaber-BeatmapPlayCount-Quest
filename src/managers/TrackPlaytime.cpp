@@ -18,12 +18,20 @@
 DEFINE_TYPE(BeatmapPlayCount::Managers, TrackPlaytime);
 
 namespace BeatmapPlayCount::Managers {
+    static TrackPlaytime* _instance = nullptr;
+
+    TrackPlaytime* TrackPlaytime::getInstance() {
+        return _instance;
+    }
+
     void TrackPlaytime::ctor(
         GlobalNamespace::GameplayCoreSceneSetupData* _sceneSetupData,
         GlobalNamespace::AudioTimeSyncController* _audioTimeSyncController,
         GlobalNamespace::AudioTimeSyncController::InitData* _audioTimeSyncControllerInitData,
         GlobalNamespace::ILevelEndActions* _levelEndActionImpl
     ) {
+        INVOKE_CTOR();
+
         audioTimeSyncController = _audioTimeSyncController;
         beatmapId = _sceneSetupData->previewBeatmapLevel->get_levelID();
         beatmapCharacteristic = _sceneSetupData->difficultyBeatmap->get_parentDifficultyBeatmapSet()->get_beatmapCharacteristic()->get_serializedName();
@@ -43,6 +51,8 @@ namespace BeatmapPlayCount::Managers {
     }
 
     void TrackPlaytime::Initialize() {
+        _instance = this;
+
         auto bannedBeatmapCharacteristics = getConfig().BannedBeatmapCharacteristics.GetValue();
         doesBeatmapHaveBannedCharacteristic = std::find(
             bannedBeatmapCharacteristics.begin(),
@@ -55,6 +65,8 @@ namespace BeatmapPlayCount::Managers {
     }
 
     void TrackPlaytime::Dispose() {
+        _instance = nullptr;
+
         levelEndActionImpl->remove_levelFinishedEvent(handleLevelFinishedEventAction);
     }
 
@@ -70,6 +82,10 @@ namespace BeatmapPlayCount::Managers {
         }
 
         if (isGameplayInPracticeMode && !getConfig().IncrementCountInPracticeMode.GetValue()) {
+            return;
+        }
+
+        if (!allowIncrementingPlayCount) {
             return;
         }
 

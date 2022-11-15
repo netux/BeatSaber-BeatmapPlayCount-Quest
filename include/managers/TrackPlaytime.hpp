@@ -26,6 +26,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BeatmapPlayCount::Managers, TrackPlaytime, Il2C
     DECLARE_PRIVATE_FIELD(bool, doesBeatmapHaveBannedCharacteristic);
     DECLARE_PRIVATE_FIELD(float, songStartTime);
 
+    DECLARE_INSTANCE_FIELD_DEFAULT(bool, allowIncrementingPlayCount, true);
+
     DECLARE_CTOR(ctor,
         ::GlobalNamespace::GameplayCoreSceneSetupData* _sceneSetupData,
         ::GlobalNamespace::AudioTimeSyncController* _audioTimeSyncController,
@@ -38,6 +40,9 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BeatmapPlayCount::Managers, TrackPlaytime, Il2C
     DECLARE_OVERRIDE_METHOD(void, Initialize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::Zenject::IInitializable::Initialize>::get());
     DECLARE_OVERRIDE_METHOD(void, Tick, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::Zenject::ITickable::Tick>::get());
     DECLARE_OVERRIDE_METHOD(void, Dispose, il2cpp_utils::il2cpp_type_check::MetadataGetter<&::System::IDisposable::Dispose>::get());
+
+public:
+    static BeatmapPlayCount::Managers::TrackPlaytime* getInstance();
 
 private:
     void IncrementPlayCount();
