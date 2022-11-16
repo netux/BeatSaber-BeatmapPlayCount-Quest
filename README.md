@@ -20,7 +20,7 @@ The count is incremented after playing 70% through a song by default, but this c
 
 ### Dependencies
 
-This mod relies Lapiz and BeatSaberMarkupLanguage (install automatically when you sync changes in BMBF).
+This mod relies Lapiz and QuestUI (install automatically when you sync changes in BMBF).
 
 ## Data location
 
