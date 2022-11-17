@@ -1,0 +1,78 @@
+name: Crash/bug report
+description: Create a report to help the mod improve
+assignees:
+  - netux
+labels:
+  - bug
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Describe what happened
+      description: A clear and concise description of what the issue was.
+      placeholder: E.g. "The mod crashes my game", or "This button is missing"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |-
+        1. Go to '...'
+        2. Click on '....'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: E.g. "This mod should not crash my game" or "This button should appear"
+
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod version
+      description: Exact version of the mod. Can be found on BMBF's Mods tab.
+      placeholder: E.g. 0.2.1
+    validations:
+      required: true
+  - type: input
+    id: bs-version
+    attributes:
+      label: Beat Saber version
+      description: Exact version of Beat Saber.
+      placeholder: E.g. 1.25.1
+    validations:
+      required: true
+  - type: input
+    id: other-mods-installed
+    attributes:
+      label: Other mods installed
+      description: List of other mods you may have installed alongside this mod.
+      placeholder: E.g. NoodleExtensions, Qosmetics, ...
+    validations:
+      required: true
+  - type: input
+    id: logs-link
+    attributes:
+      label: Link to crash report
+      description: |-
+        In case of a crash, please provide a link to a crash report uploaded by CrashReporter.
+        To generate one:
+          1. Download and install [CrashReporter](https://github.com/darknight1050/CrashReporter/releases)
+          2. Configure User ID in CrashReporter's mod settings to something identifiable
+            - If Beat Saber crashes on boot, disable BeatmapPlayCount and/or other mods until it doesn't crash anymore, and try again
+          3. Reproduce the crash
+          4. Go to <https://analyzer.questmodding.com/crashes>, find your crash, and link it below
+          5. Feel free to uninstall CrashReporter if you wish to
+      placeholder: https://analyzer.questmodding.com/crashes/(CRASH ID)
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
