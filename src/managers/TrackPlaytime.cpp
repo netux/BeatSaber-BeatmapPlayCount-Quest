@@ -18,10 +18,14 @@
 DEFINE_TYPE(BeatmapPlayCount::Managers, TrackPlaytime);
 
 namespace BeatmapPlayCount::Managers {
-    static TrackPlaytime* _instance = nullptr;
+    static std::unordered_map<std::string, bool (*)()> customCanIncrementPlayCountChecks;
 
-    TrackPlaytime* TrackPlaytime::getInstance() {
-        return _instance;
+    void TrackPlaytime::RegisterCanIncrementPlayCountCheck(std::string name, bool (*checkFn)()) {
+        customCanIncrementPlayCountChecks[name] = fn;
+    }
+
+    void TrackPlaytime::UnregisterCanIncrementPlayCountCheck(std::string name) {
+        customCanIncrementPlayCountChecks.erase(name);
     }
 
     void TrackPlaytime::ctor(
@@ -51,8 +55,6 @@ namespace BeatmapPlayCount::Managers {
     }
 
     void TrackPlaytime::Initialize() {
-        _instance = this;
-
         auto bannedBeatmapCharacteristics = getConfig().BannedBeatmapCharacteristics.GetValue();
         doesBeatmapHaveBannedCharacteristic = std::find(
             bannedBeatmapCharacteristics.begin(),
@@ -65,8 +67,6 @@ namespace BeatmapPlayCount::Managers {
     }
 
     void TrackPlaytime::Dispose() {
-        _instance = nullptr;
-
         levelEndActionImpl->remove_levelFinishedEvent(handleLevelFinishedEventAction);
     }
 
@@ -85,10 +85,6 @@ namespace BeatmapPlayCount::Managers {
             return;
         }
 
-        if (!allowIncrementingPlayCount) {
-            return;
-        }
-
         getStorage().incrementPlayCount(static_cast<std::string>(beatmapId));
         incremented = true;
     }
@@ -103,8 +99,22 @@ namespace BeatmapPlayCount::Managers {
         return CanIncrement() && CanIncrementByPercentageBecauseOfPracticeMode();
     }
 
+    bool TrackPlaytime::CanIncrementWithCustomChecks() {
+        auto& logger = getLogger();
+
+        for (auto& pair : customCanIncrementPlayCountChecks) {
+            if (!pair.second()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     bool TrackPlaytime::CanIncrement() {
-        return !isGameplayAnExternalModReplay && !doesBeatmapHaveBannedCharacteristic;
+        return !isGameplayAnExternalModReplay &&
+            !doesBeatmapHaveBannedCharacteristic &&
+            CanIncrementWithCustomChecks();
     }
 
     void TrackPlaytime::Tick() {

@@ -5,16 +5,24 @@ namespace BeatmapPlayCount::API {
     int GetPlayCount(std::string beatmapId);
 
     /**
-     * Sets whenever the current play would increment play count when the progress threshold is passed.
+     * Register a check function that returns false during play time if a
+     * song's play count shouldn't be incremented when the progress threshold
+     * is passed.
      *
-     * It may be useful unset this when a mod uses gameplay scenes for things that aren't gameplay
-     * (like replays or visualizations).
+     * This might be useful when your mod gameplay scenes for things that
+     * aren't gameplay (like replays or visualizations), and you don't
+     * want this mod to increment user play count during it.
      *
-     * @note If the progress threshold has already been passed, then the play count has already
-     * been incremented and calling this function is useless.
+     * The name argument is used to identify a check function and be able to
+     * unregister it using UnregisterCanIncrementPlayCountCheck().
      *
-     * @returns False if there is no current song playing (no TrackPlaytime gameobject instance).
-     * True if the operation succeeded.
+     * @note The check function is triggered on every frame or Update() call.
+     * If you are doing any expensive operations here, make sure to cache them.
      */
-    bool SetAllowCurrentPlayToIncrementCount(bool flag);
+    void RegisterCanIncrementPlayCountCheck(std::string name, bool (*checkFn)());
+
+    /**
+     * Unregister a check function registered by RegisterCanIncrementPlayCountCheck().
+     */
+    void UnregisterCanIncrementPlayCountCheck(std::string name);
 }

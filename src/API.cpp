@@ -13,12 +13,16 @@ namespace BeatmapPlayCount::API {
         return getStorage().getPlayCount(beatmapId);
     }
 
-    EXPOSE_API(SetAllowCurrentPlayToIncrementCount, bool, bool flag) {
-        auto trackPlaytime = BeatmapPlayCount::Managers::TrackPlaytime::getInstance();
-        if (!trackPlaytime) return false;
+    // NOTE(netux): can't use EXPOSE_API_STATIC as we need a method defined as per in the header.
+    //
+    // Why even define these methods on the header if we are using ConditionalDependencies?
+    // I don't know. To allow for direct access if this mod is required by another mod I guess.
+    EXPOSE_API(RegisterCanIncrementPlayCountCheck, void, std::string name, bool (*checkFn)()) {
+        BeatmapPlayCount::Managers::TrackPlaytime::RegisterCanIncrementPlayCountCheck(name, checkFn);
+    }
 
-        trackPlaytime->allowIncrementingPlayCount = flag;
-        return true;
+    EXPOSE_API(UnregisterCanIncrementPlayCountCheck, void, std::string name) {
+        BeatmapPlayCount::Managers::TrackPlaytime::UnregisterCanIncrementPlayCountCheck(name);
     }
 }
 
