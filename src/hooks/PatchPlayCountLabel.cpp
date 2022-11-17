@@ -64,9 +64,7 @@ namespace BeatmapPlayCount::Hooks::PatchPlayCountLabel {
         if (!playCountContainerGameObject)
         {
             // Get reference GameObject
-            auto levelParamsPanel = RET_V_UNLESS(getLogger(), il2cpp_utils::GetFieldValue<GlobalNamespace::LevelParamsPanel*>(instance, "_levelParamsPanel"));
-            auto notesPerSecondText = RET_V_UNLESS(getLogger(), il2cpp_utils::GetFieldValue<TMPro::TextMeshProUGUI*>(levelParamsPanel, "_notesPerSecondText"));
-            auto notesPerSecondContainerGameObject = notesPerSecondText->get_transform()->get_parent()->get_gameObject();
+            auto notesPerSecondContainerGameObject = instance->levelParamsPanel->notesPerSecondText->get_transform()->get_parent()->get_gameObject();
 
             // Create play count text from reference
             playCountContainerGameObject = UnityEngine::GameObject::Instantiate(
