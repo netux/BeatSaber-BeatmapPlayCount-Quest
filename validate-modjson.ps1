@@ -18,7 +18,11 @@ Write-Output "Creating qmod from mod.json"
 $psVersion = $PSVersionTable.PSVersion.Major
 if ($psVersion -ge 6) {
     $schemaUrl = "https://raw.githubusercontent.com/Lauriethefish/QuestPatcher.QMod/main/QuestPatcher.QMod/Resources/qmod.schema.json"
+
+    $PrevProgressPreference = $ProgressPreference
+    $ProgressPreference = "SilentlyContinue"
     Invoke-WebRequest $schemaUrl -OutFile ./mod.schema.json
+    $ProgressPreference = $PrevProgressPreference
 
     $schema = "./mod.schema.json"
     $modJsonRaw = Get-Content $mod -Raw
