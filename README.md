@@ -13,6 +13,12 @@ The count is incremented after playing 70% through a song by default, but this c
 - Only increment play count when the user beats the beatmap
 - GitHub CI to build release on every push?
 
+## Crashes? Other bugs? Please let me know!
+
+If you encounter any issues feel free to join the Beat Saber Modding Group Discord server ([invite](https://discord.gg/beatsabermods)) and ping Netux#2306 in [#quest-help](https://discord.com/channels/441805394323439646/599740612752703490) or send a DM with your problem. Please provide Beat Saber version, mod version, and a list of other mods you may have installed.
+
+Or if you have a GitHub account you could instead create an issue by going [here](https://github.com/netux/BeatSaber-BeatmapPlayCount-Quest/issues/new/choose).
+
 ## Installation
 
 1. Make sure your Beat Saber installation [has mod support](https://bsmg.wiki/quest-modding.html) (e.g. setup via BMBF)
