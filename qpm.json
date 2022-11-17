@@ -4,7 +4,7 @@
   "info": {
     "name": "Simple Beatmap Play Count",
     "id": "BeatmapPlayCount",
-    "version": "0.2.1",
+    "version": "0.2.2-dev",
     "url": null,
     "additionalData": {
       "overrideSoName": "libBeatmapPlayCount.so"
