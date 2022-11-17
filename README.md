@@ -11,6 +11,7 @@ The count is incremented after playing 70% through a song by default, but this c
 ### TODO
 
 - Only increment play count when the user beats the beatmap
+- GitHub CI to build release on every push?
 
 ## Installation
 
