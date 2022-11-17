@@ -40,20 +40,7 @@ namespace BeatmapPlayCount::Hooks::PatchPlayCountLabel {
             }
         }
 
-        return requirementsButton && requirementsButton->get_active();
-    }
-
-    custom_types::Helpers::Coroutine DelayedRepositionPlayCountContainer(UnityEngine::Transform* standardLevelDetailViewTransform) {
-        co_yield nullptr; // wait 1 frame
-
-        auto playCountContainerLocalPosition = UnityEngine::Vector3(
-            HasVisiblePinkCoreRequirementsButton(standardLevelDetailViewTransform) ? 4.0 : 14.0,
-            -3.0,
-            0.
-        );
-        playCountContainerGameObject->get_transform()->set_localPosition(playCountContainerLocalPosition);
-
-        co_return;
+        return requirementsButton && requirementsButton->get_activeSelf();
     }
 
     MAKE_HOOK_MATCH(PatchPlayCountLabelAfterViewRefresh, &GlobalNamespace::StandardLevelDetailView::RefreshContent, void,
@@ -101,11 +88,19 @@ namespace BeatmapPlayCount::Hooks::PatchPlayCountLabel {
 
         playCountText->set_text(std::to_string(count));
 
-        auto delayedRepositionPlayCountContainerCoro = custom_types::Helpers::CoroutineHelper::New(DelayedRepositionPlayCountContainer(instance->get_transform()));
-        GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(delayedRepositionPlayCountContainerCoro);
+        auto position = UnityEngine::Vector3(14.0, -3.0, 0.0);
+        if (HasVisiblePinkCoreRequirementsButton(instance->get_transform())) {
+            position = UnityEngine::Vector3(position.x - 10, position.y, position.z);
+        }
+        playCountContainerGameObject->get_transform()->set_localPosition(position);
+
     }
 
     void install() {
+        // Require PinkCore now so our hooks are installed and run after theirs, allowing PinkCore
+        // to create its Requirements button before we check for it.
+        Modloader::requireMod("PinkCore");
+
         INSTALL_HOOK(getLogger(), PatchPlayCountLabelAfterViewRefresh);
     }
 }
