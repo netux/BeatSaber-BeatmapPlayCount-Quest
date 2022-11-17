@@ -23,12 +23,12 @@ E.g.: "The mod should not crash my game" or "This button should appear"
 
 **Environment (please complete the following information):**
 Platform: Quest
-Mod version [e.g. 0.2.1]: 
-Beat Saber version [e.g. 1.25.1]: 
-Additional mods you may have installed [e.g. NoodleExtensions, Qosmetics, ...]: 
+Mod version (e.g. 0.2.1): 
+Beat Saber version (e.g. 1.25.1): 
+Additional mods you may have installed (e.g. NoodleExtensions, Qosmetics, ...): 
 
 **Logs**
-If applicable, add screenshots to help explain your problem.
+In case of a crash, install https://github.com/darknight1050/CrashReporter/releases, reproduce the crash, find your logs in https://analyzer.questmodding.com/crashes and link them here. It might be useful to setup a custom user ID in CrashReporter's mod settings so you can find your logs more easily.
 
 **Additional context**
 Add any other context about the problem here.
